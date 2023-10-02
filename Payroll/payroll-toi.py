@@ -73,9 +73,9 @@ def main():
     SFSV = ['SF', 'SV']
     NYCMSO = ['NYC', 'MSO']
     dldloc = df_spring.columns.get_loc('Department Long Descr')
-    locloc = df_spring.columns.get_loc('LOCATION')
-    # First group of 4 For loops is to Handle (Clean) Exceptions
     
+
+ 
     # Reclassify some exceptions before massaging the dataframe
     # Add all People to the appropriate Dict Data Structure:
     # Call Center, Medical Records, Receptionist HQ, Financial Counselor, Clincal Operations
@@ -98,7 +98,9 @@ def main():
             co_Dict[row['Employee Name']] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", False]
     
     
-    #print(fc_Dict)
+    
+
+    df_groupby = df_spring.groupby(['Invoice Number', 'SUB_DEPARTMENT', 'Department Long Descr'])
 
     for i in uniqueInvoices:
         for k in uniqueSub_Dept:
