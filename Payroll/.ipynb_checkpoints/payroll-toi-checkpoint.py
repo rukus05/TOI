@@ -765,8 +765,7 @@ def main():
         deptCode = r['DEPT CODE']
         dp = re.sub(r"[^0-9]","",str(deptCode)[3:10])
 
-        # Add the JE's at the bottom of the dataframe.
-        # df_Output.loc[len(df_Output.index)] is using the length of the DataFrame's index to specify the row label and, in effect, accessing the last row of the DataFrame.
+        
         if m != 0:
             df_Output.loc[len(df_Output.index)] = ["", ped_s, ivd_s, "", name[2], CoA[4][CoA_Index], "", str(name[0]) + ' ' + str(name[1]), b, "", name[3], dp, "", "", ""]
             df_Output.loc[len(df_Output.index)] = ["", ped_s, ivd_s, "", name[2], CoA[5][CoA_Index], "", str(name[0]) + ' ' + str(name[1]), c, "", name[3], dp, "", "", ""]
