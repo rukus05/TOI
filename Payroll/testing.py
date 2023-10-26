@@ -2,13 +2,8 @@ import pandas as pd
 import time
 import numpy as np
 import re
-#import openpyxl
-#import datetime
 import tkinter as tk
-#from tkinter import TOP, ttk
 from tkinter import filedialog as fd
-#from tkinter.messagebox import showinfo
-#from tkinter.filedialog import asksaveasfile
 from definitions import coa_dict as coa
 from definitions import hdc_list as hdcl
 from definitions import roll_up_accts as rollup
@@ -16,7 +11,6 @@ from definitions import remove_acct_list as remove_accts
 from definitions import credit_acct_list as cr_accts
 from definitions import credit_rollup_accts as credit_rollups
 from definitions import locations_dict as ld
-
 
 
 def main():
@@ -37,14 +31,12 @@ def main():
     # Remove the columns not used in the JE's
     # result_list = [x for x in original_list if x not in elements_to_remove]
     col_headers = [x for x in all_col_headers if x not in remove_accts]
-               
-    
+   
     no_of_columns = len(col_headers)    
     
     # Remember:  Index is at 0, then first column, second column, etc, etc.  To get last Column, subtract 1
     # Like this:  print(col_headers[no_of_columns - 1])  
-    #print(col_headers[no_of_columns - 1]) 
-
+    
     # Reduce the size of the col_headers list to start with the Columns we want.  In this case, "Regular Earnings Total"
     RET = "Regular Earnings Total"
     if RET in col_headers:
@@ -57,62 +49,39 @@ def main():
     money_headers.pop()
     # Save the number of money headers.
     size_of_money_headers = len(money_headers)
-    #print(size_of_money_headers)
-    #print (money_headers[0])
-    #print (money_headers[69])
-    #print(len(money_headers))
-    
-    #  This code would get the size of each group
-    #df_groupby = df_toi.groupby(['Company Code', 'Home Department Code']).size()
-    #df_groupby = df_groupby.reset_index()
-
-    # Group the Data Frame by Company Code, then Home Department Code
+ 
+    # Group the Data Frame by Company Code,  Home Department Code, and Location.
     df_groupby = df_toi.groupby(['Company Code', 'Home Department Code', 'Location Description'])
-    #df_groupby.ngroups()
-    #df_groupby.groups()
     
-    #result_df = df_groupby['Regular Earnings Total'].sum()
-    #result_df = result_df.reset_index()
     
     # Create a list the size of the columns of interest, "money_headers"
     values_list = [0 for _ in range(size_of_money_headers)]
-    # print(len(values_list))
     
     # Create new Dataframe for the Output.
     df_Output = pd.DataFrame(columns=['Pay Date', 'Account Number', 'Description', 'Debit Amount', 'Credit Amount', 'Location', 'Dept'])
     
     for groupings, row in df_groupby:
-        # Initialize rollup accounts sum variables to 0.
-        retiresum = AIPsum =  bonussum = ficasum = futasum = garnishsum = hsasum = medsum = netsum = othersum = otsum\
-              = physsum = ptosum = regsum = rfsum = sevsum = signonsum = suisum = taxsum = wagessum =  0 
         # Find out what Home Department Code this row is, and get the index from the Home Department Code List
         if groupings[1] in hdcl:
             hdc_index = hdcl.index(groupings[1])
-            print(hdc_index)
-            
         # Use the Home Department Code Index to get the right GL's from the Chart of Accounts
 
-
-        # Initialize sum for rollup accounts to 0.  Set  G/L value to blank.
+        # Initialize sum amd G/L for rollup accounts to 0.  
         rollupsums = {
             "Wages" : [0, 0], "401K Payable" : [0, 0], "Bonus-B_Bonus" : [0, 0], "FICA" : [0, 0], "Garnishments" : [0, 0], "HSA_Deduction" : [0, 0], "Medical Ins Ded" : [0, 0], \
             "Net Pay" : [0, 0], "Other Payroll Taxes" : [0, 0], "Overtime" : [0, 0], "Physician Bonus" : [0, 0], "Severance Expense" : [0, 0], "Tax Deduction" : [0, 0]
         }
 
         for i in range(size_of_money_headers):
-            #print(i)
             found = False
             lookupkey = ""
             for key, value_list in rollup.items():
                 if i in value_list:
                     found = True
                     lookupkey = key
-                    #print(coa[i][hdc_index], i)
                     break
             # If this payroll item was found above, and the COA is not empty for it, then execute.      
             if found and (i in coa and coa[i]):
-                print(hdc_index)
-                print(coa[i][hdc_index])
                 rollupsums[lookupkey][0] += row[money_headers[i]].sum()
                 rollupsums[lookupkey][1] = coa[i][hdc_index]
                 
@@ -120,9 +89,7 @@ def main():
                 values_list[i] = row[money_headers[i]].sum()
                 if values_list[i] != 0:
                     if coa[i]:
-                        #print(coa[i][hdc_index])
-                        #print(values_list[i])
-
+                       
                         # Convert data type to datetime64[ns]
                         ped = row['Pay Date']
                         ped = ped.astype("datetime64[ns]")
@@ -140,7 +107,7 @@ def main():
 
                         #print(ld[groupings[2]])
                         
-                        # If matches for credit accounts, else it's a debit account
+                        # If matches for credit accounts, else it's a debit account.  Values are printed in appropriate column.
                         if i in cr_accts:
                             df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), "", values_list[i], ld[groupings[2]], hdcl[hdc_index]]
                         else:
@@ -168,18 +135,7 @@ def main():
                 else:
                     df_Output.loc[len(df_Output.index)] = [ped_s, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, z[0], "", ld[groupings[2]], hdcl[hdc_index]]
             
-    
-
-
-
-
-    """
-    #Example showing how to Only print if GLs are NOT blank for this HDC and payroll item.
-    mydict = { a : [2, 3], b : [] }
-    if mydict[a]:
-        print (mydict[a][1])
-    """    
-
+ 
     
     # Start the "Save As" dialog box.
     app = tk.Tk()
@@ -188,16 +144,9 @@ def main():
     status_label.pack()
     save_button = tk.Button(app, text="Save as", command=save_dataframe(df_Output, status_label))
     save_button.pack(padx=20, pady=10)
-    
-
-    CoA_Index = 0
-    vals = []
-
-
+   
     runningtime = time.time() - start
     print("The execution time is:", runningtime)
-
-        
 
 
 def FilePrompt():
@@ -214,8 +163,7 @@ def FilePrompt():
 
     
 def save_dataframe(df, sl):
-    file_path = fd.asksaveasfilename(defaultextension=".xlsx",
-                                             filetypes=[("Excel files", "*.xlsx"), ("All files", "*.*")])
+    file_path = fd.asksaveasfilename(defaultextension=".xlsx", filetypes=[("Excel files", "*.xlsx"), ("All files", "*.*")])
     
     if file_path:
         try:
