@@ -109,7 +109,7 @@ def main():
                     lookupkey = key
                     #print(coa[i][hdc_index], i)
                     break
-                    
+            # If this payroll item was found above, and the COA is not empty for it, then execute.      
             if found and (i in coa and coa[i]):
                 print(hdc_index)
                 print(coa[i][hdc_index])
@@ -162,8 +162,6 @@ def main():
                 else:
                     truncated_text = text
 
-                #print(ld[groupings[2]])
-                
                 # If matches for credit accounts, else it's a debit account
                 if acct in credit_rollups:
                     df_Output.loc[len(df_Output.index)] = [ped_s, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, "", z[0], ld[groupings[2]], hdcl[hdc_index]]
@@ -177,9 +175,9 @@ def main():
 
     """
     #Example showing how to Only print if GLs are NOT blank for this HDC and payroll item.
-    mydict = { 1 : [2, 3], 2 : [] }
-    if mydict[1]:
-        print (mydict[1][1])
+    mydict = { a : [2, 3], b : [] }
+    if mydict[a]:
+        print (mydict[a][1])
     """    
 
     
