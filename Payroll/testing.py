@@ -14,6 +14,7 @@ from definitions import hdc_list as hdcl
 from definitions import roll_up_accts as rollup
 from definitions import remove_acct_list as remove_accts
 from definitions import credit_acct_list as cr_accts
+from definitions import credit_rollup_accts as credit_rollups
 from definitions import locations_dict as ld
 
 
@@ -56,7 +57,7 @@ def main():
     money_headers.pop()
     # Save the number of money headers.
     size_of_money_headers = len(money_headers)
-    print(size_of_money_headers)
+    #print(size_of_money_headers)
     #print (money_headers[0])
     #print (money_headers[69])
     #print(len(money_headers))
@@ -87,43 +88,34 @@ def main():
         # Find out what Home Department Code this row is, and get the index from the Home Department Code List
         if groupings[1] in hdcl:
             hdc_index = hdcl.index(groupings[1])
-            #print(hdc_index)
+            print(hdc_index)
+            
         # Use the Home Department Code Index to get the right GL's from the Chart of Accounts
+
+
+        # Initialize sum for rollup accounts to 0.  Set  G/L value to blank.
+        rollupsums = {
+            "Wages" : [0, 0], "401K Payable" : [0, 0], "Bonus-B_Bonus" : [0, 0], "FICA" : [0, 0], "Garnishments" : [0, 0], "HSA_Deduction" : [0, 0], "Medical Ins Ded" : [0, 0], \
+            "Net Pay" : [0, 0], "Other Payroll Taxes" : [0, 0], "Overtime" : [0, 0], "Physician Bonus" : [0, 0], "Severance Expense" : [0, 0], "Tax Deduction" : [0, 0]
+        }
+
         for i in range(size_of_money_headers):
             #print(i)
-            found = any(i in v for v in rollup.values())
-            if found:
-                values_list[i] = row[money_headers[i]].sum()
-                if values_list[i] != 0:
-                    if coa[i]:
-                        #print(coa[i][hdc_index])
-                        #print(values_list[i])
-
-                        # Convert data type to datetime64[ns]
-                        ped = row['Pay Date']
-                        ped = ped.astype("datetime64[ns]")
-                        ped_s = str(ped).split('Name', 1)[0]
-                        ped_s = ped_s[len(ped_s) - 11:]
-                        
-                        # Clean up Batch Number text
-                        text = str(row['Batch Number'])
-                        keyword = "Name"
-                        parts = text.split(keyword)
-                        if len(parts) > 1:
-                            truncated_text = parts[0]
-                        else:
-                            truncated_text = text
-
-                        print(ld[groupings[2]])
-                        
-                        # If matches for credit accounts, else it's a debit account
-                        if i in cr_accts:
-                            df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), "", values_list[i], ld[groupings[2]], hdcl[hdc_index]]
-                        else:
-                            df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), values_list[i], "", ld[groupings[2]], hdcl[hdc_index]]
+            found = False
+            lookupkey = ""
+            for key, value_list in rollup.items():
+                if i in value_list:
+                    found = True
+                    lookupkey = key
+                    #print(coa[i][hdc_index], i)
+                    break
                     
-
-
+            if found and (i in coa and coa[i]):
+                print(hdc_index)
+                print(coa[i][hdc_index])
+                rollupsums[lookupkey][0] += row[money_headers[i]].sum()
+                rollupsums[lookupkey][1] = coa[i][hdc_index]
+                
             else:    
                 values_list[i] = row[money_headers[i]].sum()
                 if values_list[i] != 0:
@@ -146,14 +138,39 @@ def main():
                         else:
                             truncated_text = text
 
-                        print(ld[groupings[2]])
+                        #print(ld[groupings[2]])
                         
                         # If matches for credit accounts, else it's a debit account
                         if i in cr_accts:
                             df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), "", values_list[i], ld[groupings[2]], hdcl[hdc_index]]
                         else:
                             df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), values_list[i], "", ld[groupings[2]], hdcl[hdc_index]]
-                    
+        
+        for acct, z in rollupsums.items():
+            if z[0] != 0:
+                ped = row['Pay Date']
+                ped = ped.astype("datetime64[ns]")
+                ped_s = str(ped).split('Name', 1)[0]
+                ped_s = ped_s[len(ped_s) - 11:]
+                
+                # Clean up Batch Number text
+                text = str(row['Batch Number'])
+                keyword = "Name"
+                parts = text.split(keyword)
+                if len(parts) > 1:
+                    truncated_text = parts[0]
+                else:
+                    truncated_text = text
+
+                #print(ld[groupings[2]])
+                
+                # If matches for credit accounts, else it's a debit account
+                if acct in credit_rollups:
+                    df_Output.loc[len(df_Output.index)] = [ped_s, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, "", z[0], ld[groupings[2]], hdcl[hdc_index]]
+                else:
+                    df_Output.loc[len(df_Output.index)] = [ped_s, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, z[0], "", ld[groupings[2]], hdcl[hdc_index]]
+            
+    
 
 
 
