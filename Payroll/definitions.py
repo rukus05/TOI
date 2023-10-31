@@ -3,7 +3,7 @@
 # Chart of Accounts for TOI.
 # The value list in the dict below are based on "Home Department Code" (HDC); the columns are HDC's.
 
-
+# Create a Dictionary Class that ignores trailing and leading spaces.
 class SpaceInsensitiveDict(dict):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
