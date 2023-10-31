@@ -49,9 +49,14 @@ def main():
     money_headers.pop()
     # Save the number of money headers.
     size_of_money_headers = len(money_headers)
- 
+        
+    # Convert the Pay Date column to a datetime data type
+    df_toi['Pay Date'] = pd.to_datetime(df_toi['Pay Date'])
+    # Remove the hours, minutes, and seconds
+    df_toi['Pay Date'] = df_toi['Pay Date'].dt.date
+
     # Group the Data Frame by Company Code,  Home Department Code, and Location.
-    df_groupby = df_toi.groupby(['Company Code', 'Home Department Code', 'Location Description'])
+    df_groupby = df_toi.groupby(['Company Code', 'Home Department Code', 'Location Description', 'Pay Date'])
     
     
     # Create a list the size of the columns of interest, "money_headers"
@@ -91,10 +96,7 @@ def main():
                     if coa[i]:
                        
                         # Convert data type to datetime64[ns]
-                        ped = row['Pay Date']
-                        ped = ped.astype("datetime64[ns]")
-                        ped_s = str(ped).split('Name', 1)[0]
-                        ped_s = ped_s[len(ped_s) - 11:]
+                        ped = groupings[3]
                         
                         # Clean up Batch Number text
                         text = str(row['Batch Number'])
@@ -110,16 +112,13 @@ def main():
                         # If matches for credit accounts, else it's a debit account.  Values are printed in appropriate column. 
                         # To address leading or trailing spaces in Location Descriptions, strip() method had to be employed whereever groupings[2] of the groupby object was referenced.
                         if i in cr_accts:
-                            df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), "", values_list[i], ld[groupings[2].strip()], hdcl[hdc_index]]
+                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), "", values_list[i], ld[groupings[2].strip()], hdcl[hdc_index]]
                         else:
-                            df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), values_list[i], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), values_list[i], "", ld[groupings[2].strip()], hdcl[hdc_index]]
         
         for acct, z in rollupsums.items():
             if z[0] != 0:
-                ped = row['Pay Date']
-                ped = ped.astype("datetime64[ns]")
-                ped_s = str(ped).split('Name', 1)[0]
-                ped_s = ped_s[len(ped_s) - 11:]
+                ped = groupings[3]
                 
                 # Clean up Batch Number text
                 text = str(row['Batch Number'])
@@ -132,9 +131,9 @@ def main():
 
                 # If matches for credit accounts, else it's a debit account
                 if acct in credit_rollups:
-                    df_Output.loc[len(df_Output.index)] = [ped_s, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
+                    df_Output.loc[len(df_Output.index)] = [ped, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
                 else:
-                    df_Output.loc[len(df_Output.index)] = [ped_s, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+                    df_Output.loc[len(df_Output.index)] = [ped, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
             
  
     
