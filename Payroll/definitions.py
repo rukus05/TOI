@@ -1,5 +1,27 @@
-# Python file for the Chart of Accounts for TOI.
-#  The value list in the dict below are based on "Home Department Code" (HDC); the columns are HDC's.
+# This file holds definitions for the Payroll Journal Entry Automations Python Program.
+
+# Chart of Accounts for TOI.
+# The value list in the dict below are based on "Home Department Code" (HDC); the columns are HDC's.
+
+
+class SpaceInsensitiveDict(dict):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def _strip_key(self, key):
+        return key.strip()
+
+    def _generate_lookup_keys(self, key):
+        return key, self._strip_key(key)
+
+    def __getitem__(self, key):
+        original_key, stripped_key = self._generate_lookup_keys(key)
+        return super().__getitem__(stripped_key)
+
+    def __setitem__(self, key, value):
+        original_key, stripped_key = self._generate_lookup_keys(key)
+        super().__setitem__(stripped_key, value)
+
 
 coa_dict ={
     0 : [52000, 52000, 52000, 52000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000], \
@@ -201,13 +223,13 @@ coa_dict ={
 
 }
 
-
+# This list represents the column headers for the COA.  It is ultimately used to get the column number ("index")
 hdc_list = [100100, 100200, 100300, 400100, 100400, 200100, 200200, 300100, 300200, 300250, 300300, 300400, 300500, 700100, 700110, 700120, 700200, 700205, \
             700210, 700215, 700225, 700230, 700300, 700305, 700310, 700315, 700320, 700325, 700326, 700327, 700330, 700335, 700340, 700345, 700350, 700360, \
             701000, 701100, 701200, 701210, 702010, 702100, 702300, 702400, 702410, 702415, 703000, 704000, 704100, 704500, 705000, 705500, 705600]
 
 
-
+# Define the accounts to roll up.
 roll_up_accts = {
     "Wages" : [0, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13, 14, 20, 25, 31, 32, 33, 34, 36, 44, 46, 48, 53, 55, 57, 58, 59, 61, 65, 66, 69], \
     "401K Payable" : [112, 113, 127], \
@@ -228,18 +250,22 @@ roll_up_accts = {
 
 }
 
-
+# Defines the Credit Accounts
 credit_acct_list = [71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, \
                     100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 127, 128, \
                     129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 164, 166, 168, 170, 172, 173, 175, 177, 178, 180, \
                     182, 184, 186, 188, 190, 192, 194]
 
+# Defines the Rollup Accounts that are Credit Accounts
 credit_rollup_accts = ["Garnishments", "Net Pay",  "HSA_Deduction", "401K Payable", "Medical Ins Ded", "Tax Deduction"]
 
+# This list is used to remove the columns not used for J/E.
 remove_acct_list = ['Overtime Hours Total', 'WAGES', 'OT', 'BONUS', 'SIGNING BONUS', 'VACATION', 'SEVERANCE', 'Gross Pay']
 
 
-locations_dict = {"Medical Ins Ded"
+locations_dict = SpaceInsensitiveDict()
+# Dictionary of locations
+locations_dict = {
     'The Oncology Institute, Inc.' : 101, \
     'Parent' : 100, \
     'Acquisition' : 200, \
@@ -296,7 +322,7 @@ locations_dict = {"Medical Ins Ded"
     'TOI Riverside' : 1025, \
     'TOI San Bernardino' : 1026, \
     'TOI Upland' : 1027, \
-    'TOI Victorville ' : 1046, \
+    'TOI Victorville' : 1046, \
     'Pod 9' : 9, \
     'Pod 10' : 10, \
     'TOI Hemet' : 1029, \
@@ -304,8 +330,8 @@ locations_dict = {"Medical Ins Ded"
     'TOI Temecula' : 1031, \
     'Pod 15' : 15, \
     'TOI Vista' : 1043, \
-    'TOI Hillcrest ' : 1044, \
-    'TOI Chula Vista ' : 1045, \
+    'TOI Hillcrest' : 1044, \
+    'TOI Chula Vista' : 1045, \
     'TOI Fresno' : 'Fresno', \
     'Pod 17' : 17, \
     'Fresno WCC' : 1051, \
@@ -337,9 +363,10 @@ locations_dict = {"Medical Ins Ded"
     'Pod 18' : 18, \
     'TOI Fort Lauderdale-17th Street' : 2007, \
     'TOI Fort Lauderdale-Imperial Point' : 2008, \
-    'TOI Plantation ' : 2009, \
+    'TOI Plantation' : 2009, \
     'Pod 19' : 19, \
-    'TOI South Miami ' : 2010, \
+    'TOI North Miami' : 2015, \
+    'TOI South Miami' : 2010, \
     'TOI South Miami-West' : 2011, \
     'Texas' : 'Texas', \
     'Pod 16' : 16, \
@@ -356,7 +383,7 @@ locations_dict = {"Medical Ins Ded"
     'TOI Hollywood' : 2014, \
     'TOI R1-Downey RadOnce' : 1802, \
     'TOI R-1 Pomona RadOnc' : 1803, \
-    'TOI R1-Covina RadOnc ' : 1804, \
+    'TOI R1-Covina RadOnc' : 1804, \
     'TOI R1-Victorville RadOnc' : 1805, \
     'TOI R-1 Hemet RadOnc' : 1806, \
     'TOI Palm Desert' : 1057, \

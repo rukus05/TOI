@@ -66,7 +66,7 @@ def main():
             hdc_index = hdcl.index(groupings[1])
         # Use the Home Department Code Index to get the right GL's from the Chart of Accounts
 
-        # Initialize sum amd G/L for rollup accounts to 0.  
+        # Dictionary Defining the Roll up Accounts, and initialize sum amd G/L for each to 0.  
         rollupsums = {
             "Wages" : [0, 0], "401K Payable" : [0, 0], "Bonus-B_Bonus" : [0, 0], "FICA" : [0, 0], "Garnishments" : [0, 0], "HSA_Deduction" : [0, 0], "Medical Ins Ded" : [0, 0], \
             "Net Pay" : [0, 0], "Other Payroll Taxes" : [0, 0], "Overtime" : [0, 0], "Physician Bonus" : [0, 0], "Severance Expense" : [0, 0], "Tax Deduction" : [0, 0]
@@ -107,11 +107,12 @@ def main():
 
                         #print(ld[groupings[2]])
                         
-                        # If matches for credit accounts, else it's a debit account.  Values are printed in appropriate column.
+                        # If matches for credit accounts, else it's a debit account.  Values are printed in appropriate column. 
+                        # To address leading or trailing spaces in Location Descriptions, strip() method had to be employed whereever groupings[2] of the groupby object was referenced.
                         if i in cr_accts:
-                            df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), "", values_list[i], ld[groupings[2]], hdcl[hdc_index]]
+                            df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), "", values_list[i], ld[groupings[2].strip()], hdcl[hdc_index]]
                         else:
-                            df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), values_list[i], "", ld[groupings[2]], hdcl[hdc_index]]
+                            df_Output.loc[len(df_Output.index)] = [ped_s, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), values_list[i], "", ld[groupings[2].strip()], hdcl[hdc_index]]
         
         for acct, z in rollupsums.items():
             if z[0] != 0:
@@ -131,9 +132,9 @@ def main():
 
                 # If matches for credit accounts, else it's a debit account
                 if acct in credit_rollups:
-                    df_Output.loc[len(df_Output.index)] = [ped_s, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, "", z[0], ld[groupings[2]], hdcl[hdc_index]]
+                    df_Output.loc[len(df_Output.index)] = [ped_s, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
                 else:
-                    df_Output.loc[len(df_Output.index)] = [ped_s, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, z[0], "", ld[groupings[2]], hdcl[hdc_index]]
+                    df_Output.loc[len(df_Output.index)] = [ped_s, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
             
  
     
