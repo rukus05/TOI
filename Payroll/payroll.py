@@ -56,7 +56,7 @@ def main():
     df_toi['Pay Date'] = df_toi['Pay Date'].dt.date
 
     # Group the Data Frame by Company Code,  Home Department Code, and Location.
-    df_groupby = df_toi.groupby(['Company Code', 'Home Department Code', 'Location Description', 'Pay Date'])
+    df_groupby = df_toi.groupby(['Batch Number', 'Home Department Code', 'Location Description', 'Pay Date'])
     
     
     # Create a list the size of the columns of interest, "money_headers"
@@ -91,14 +91,18 @@ def main():
                 rollupsums[lookupkey][1] = coa[i][hdc_index]
                 
             else:    
-                values_list[i] = row[money_headers[i]].sum()
+                if i == 125:
+                    values_list[i] = abs(row[money_headers[i]].sum())
+                else:
+                    values_list[i] = row[money_headers[i]].sum()
                 if values_list[i] != 0:
                     if coa[i]:
                        
                         # Convert data type to datetime64[ns]
                         ped = groupings[3]
-                        
+                                                
                         # Clean up Batch Number text
+                        '''
                         text = str(row['Batch Number'])
                         keyword = "Name"
                         parts = text.split(keyword)
@@ -106,21 +110,22 @@ def main():
                             truncated_text = parts[0]
                         else:
                             truncated_text = text
+                        '''
 
-                        #print(ld[groupings[2]])
-                        
+                                                
                         # If matches for credit accounts, else it's a debit account.  Values are printed in appropriate column. 
                         # To address leading or trailing spaces in Location Descriptions, strip() method had to be employed whereever groupings[2] of the groupby object was referenced.
                         if i in cr_accts:
-                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), "", values_list[i], ld[groupings[2].strip()], hdcl[hdc_index]]
+                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + ' ' + str(money_headers[i]), "", values_list[i], ld[groupings[2].strip()], hdcl[hdc_index]]
                         else:
-                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], groupings[0] + ' ' + truncated_text + ' ' + str(money_headers[i]), values_list[i], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + ' ' + str(money_headers[i]), values_list[i], "", ld[groupings[2].strip()], hdcl[hdc_index]]
         
         for acct, z in rollupsums.items():
             if z[0] != 0:
                 ped = groupings[3]
                 
                 # Clean up Batch Number text
+                '''
                 text = str(row['Batch Number'])
                 keyword = "Name"
                 parts = text.split(keyword)
@@ -128,12 +133,13 @@ def main():
                     truncated_text = parts[0]
                 else:
                     truncated_text = text
+                '''
 
                 # If matches for credit accounts, else it's a debit account
                 if acct in credit_rollups:
-                    df_Output.loc[len(df_Output.index)] = [ped, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
+                    df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
                 else:
-                    df_Output.loc[len(df_Output.index)] = [ped, z[1], groupings[0] + ' ' + truncated_text + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+                    df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
             
  
     
