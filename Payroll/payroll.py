@@ -49,6 +49,11 @@ def main():
     money_headers.pop()
     # Save the number of money headers.
     size_of_money_headers = len(money_headers)
+
+    if size_of_money_headers != 196:
+        print('Columns in Raw Data File have changed!!!!')
+    else:
+        print('Columns in Raw Data File appear to be unchanged')
         
     # Convert the Pay Date column to a datetime data type
     df_toi['Pay Date'] = pd.to_datetime(df_toi['Pay Date'])
@@ -142,7 +147,8 @@ def main():
                     df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
             
  
-    
+    runningtime = time.time() - start
+
     # Start the "Save As" dialog box.
     app = tk.Tk()
     app.title("Save File As")
@@ -151,7 +157,7 @@ def main():
     save_button = tk.Button(app, text="Save as", command=save_dataframe(df_Output, status_label))
     save_button.pack(padx=20, pady=10)
    
-    runningtime = time.time() - start
+    
     print("The execution time is:", runningtime)
 
 
