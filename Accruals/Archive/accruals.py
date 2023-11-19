@@ -5,8 +5,8 @@ import numpy as np
 from fns import FilePrompt
 from fns import save_dataframe
 from definitions import locations_dict as ld
-from definitions import coa_dict as cd
 
+# This Accrual file was based on an obsolete input file format#
 
 def main():
 
@@ -18,18 +18,19 @@ def main():
     df_toi = df_toi.reset_index()
 
     # Create a dataframe for the output
-    df_Output = pd.DataFrame(columns=['GL Code', 'GL Name', 'Vendor', 'Location', 'Department', 'Description', 'Accrual Amount'])
-    
-    # Account Code is GL Name; Supplier Name is Vendor;  Custom 5 - Code is Location;  Custom 3 - Code is Department
-    df_groupby = df_toi.groupby(['Account Code', 'Supplier Name', 'Custom 5 - Code', 'Custom 3 - Code'])
+    df_Output = pd.DataFrame(columns=['GL Code', 'Vendor', 'Location', 'Description', 'Accrual Amount'])
+
+    df_groupby = df_toi.groupby(['GL Code', 'Vendor', 'Location', 'Department'])
 
 
     for groupings, row in df_groupby:
-        est_accrual = row['Amount'].sum()
-        #location_code = ld[groupings[2].strip()]
-        df_Output.loc[len(df_Output.index)] = [cd[groupings[0]], groupings[0], groupings[1], groupings[2], groupings[3], row['Description'], est_accrual]
+        if groupings[1]:
+            est_accrual = row['Amount'].sum()
+            #location_code = ld[groupings[2].strip()]
+            df_Output.loc[len(df_Output.index)] = [groupings[0], groupings[1], groupings[2], groupings[3], est_accrual]
             
-
+    runningtime = time.time() - start
+    
     # Start the "Save As" dialog box.
     app = tk.Tk()
     app.title("Save File As")
@@ -38,7 +39,7 @@ def main():
     save_button = tk.Button(app, text="Save as", command=save_dataframe(df_Output, status_label))
     save_button.pack(padx=20, pady=10)
    
-    runningtime = time.time() - start
+    
     print("The execution time is:", runningtime)
 
 
