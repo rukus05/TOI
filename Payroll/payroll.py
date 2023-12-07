@@ -11,6 +11,7 @@ from definitions import remove_acct_list as remove_accts
 from definitions import credit_acct_list as cr_accts
 from definitions import credit_rollup_accts as credit_rollups
 from definitions import locations_dict as ld
+#from definitions import baseline_accounts as baseline
 
 
 def main():
@@ -47,10 +48,12 @@ def main():
     money_headers = col_headers[index_ret:]
     # Discount for the last column, which is "Batch Number"
     money_headers.pop()
+    #print(money_headers)
     # Save the number of money headers.
     size_of_money_headers = len(money_headers)
+    #print(size_of_money_headers)
 
-    if size_of_money_headers != 196:
+    if size_of_money_headers != 199:
         print('Columns in Raw Data File have changed!!!!')
     else:
         print('Columns in Raw Data File appear to be unchanged')
@@ -81,8 +84,9 @@ def main():
             "Wages" : [0, 0], "401K Payable" : [0, 0], "Bonus-B_Bonus" : [0, 0], "FICA" : [0, 0], "Garnishments" : [0, 0], "HSA_Deduction" : [0, 0], "Medical Ins Ded" : [0, 0], \
             "Net Pay" : [0, 0], "Other Payroll Taxes" : [0, 0], "Overtime" : [0, 0], "Physician Bonus" : [0, 0], "Severance Expense" : [0, 0], "Tax Deduction" : [0, 0]
         }
-
-        for i in range(size_of_money_headers):
+        # Vaulues list counter
+        counter = 0
+        for i in money_headers:
             found = False
             lookupkey = ""
             for key, value_list in rollup.items():
@@ -92,15 +96,15 @@ def main():
                     break
             # If this payroll item was found above, and the COA is not empty for it, then execute.      
             if found and (i in coa and coa[i]):
-                rollupsums[lookupkey][0] += row[money_headers[i]].sum()
+                rollupsums[lookupkey][0] += row[i].sum()
                 rollupsums[lookupkey][1] = coa[i][hdc_index]
                 
             else:    
-                if i == 125:
-                    values_list[i] = abs(row[money_headers[i]].sum())
+                if counter == 127:
+                    values_list[counter] = abs(row[i].sum())
                 else:
-                    values_list[i] = row[money_headers[i]].sum()
-                if values_list[i] != 0:
+                    values_list[counter] = row[i].sum()
+                if values_list[counter] != 0:
                     if coa[i]:
                        
                         # Convert data type to datetime64[ns]
@@ -121,9 +125,10 @@ def main():
                         # If matches for credit accounts, else it's a debit account.  Values are printed in appropriate column. 
                         # To address leading or trailing spaces in Location Descriptions, strip() method had to be employed whereever groupings[2] of the groupby object was referenced.
                         if i in cr_accts:
-                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + ' ' + str(money_headers[i]), "", values_list[i], ld[groupings[2].strip()], hdcl[hdc_index]]
+                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + ' ' + str([i]), "", values_list[counter], ld[groupings[2].strip()], hdcl[hdc_index]]
                         else:
-                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + ' ' + str(money_headers[i]), values_list[i], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + ' ' + str([i]), values_list[counter], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+            counter += 1
         
         for acct, z in rollupsums.items():
             if z[0] != 0:
