@@ -232,7 +232,9 @@ coa_dict ={
 'Worked in State- EE Tax' : [14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900], \
 'Worked in State - Employer Tax' : [52200, 52200, 52200, 52200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200, 60200], \
 'O Other' : [52000, 52000, 52000, 52000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000, 60000], \
-
+'SLR SLR' : [52106, 52106, 52106, 52106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106, 60106], \
+'Medicare Surtax - Employee Tax' : [14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900], \
+'Net Pay' : [14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900, 14900], \
 }
 
 # This list represents the column headers for the COA.  It is ultimately used to get the column number ("index")
@@ -249,7 +251,7 @@ roll_up_accts = {
                'O_Other_Other Earnings', 'OI_Other Earnings', 'P_PERSONAL_Other Earnings', 'PDT_Prior DT_Other Earnings', 'QMD QMD', 'REG_Regular Pay_Other Earnings', \
                'RET_Retro Pay_Other Earnings', 'RIV_Riverside_Other Earnings', 'SP1_Sev  COVID_Other Earnings', 'SPL_C19 Supp Sick_Other Earnings', 'STP_Stipend_Other Earnings', \
                'T_Other Earnings', 'TMD_TRFS MD_Other Earnings', 'U_Other Earnings', 'WRQ_WRK REQ_Other Earnings', 'X_Other Earnings', 'Z_Other Earnings', 'TEP_Educational Pro_Deduction', \
-               'UMD_UM MD_Other Earnings'], \
+               'UMD_UM MD_Other Earnings', 'O Other'], \
     "401K Payable" : ['K_401K$_Deduction', 'L_401k L_Deduction', 'R_Roth 401k $_Deduction'], \
     # "AIP Bonus" : [29], \
     "Bonus-B_Bonus" : ['B_BONUS_Other Earnings', 'BON_Other Earnings'], \
@@ -292,7 +294,7 @@ credit_acct_list = ['5_OREGON WBF TAX_Deduction', '69_TAXL$_Deduction', '70_Bank
                     'Z_1099 Employess_Deduction', 'Family Leave Insurance - Employee Tax', 'Federal Income - Employee Tax', 'Lived in Local - EE Tax', 'Lived in State- EE Tax', \
                     'Local 10 - Employee Tax', 'Local 4 - Employee Tax', 'Local 5 - Employee Tax', 'Local 9 - Employee Tax', 'Medical Leave Insurance - Employee Tax', \
                     'Medicare - Employee Tax', 'SDI - Employee Tax', 'Social Security - Employee Tax', 'SUI - Employee Tax', 'SUI/SDI Employee Tax', 'Transit - Employee Tax', \
-                    'Worked in Local - EE Tax', 'Worked in State- EE Tax']
+                    'Worked in Local - EE Tax', 'Worked in State- EE Tax', 'Medicare Surtax - Employee Tax', 'Net Pay']
 
 # Defines the Rollup Accounts that are Credit Accounts
 credit_rollup_accts = ["Garnishments", "Net Pay",  "HSA_Deduction", "401K Payable", "Medical Ins Ded", "Tax Deduction"]
