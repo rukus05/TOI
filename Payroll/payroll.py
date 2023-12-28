@@ -69,6 +69,8 @@ def main():
     
     # Create a list the size of the columns of interest, "money_headers"
     values_list = [0 for _ in range(size_of_money_headers)]
+    #print(values_list)
+    #print(size_of_money_headers)
     
     # Create new Dataframe for the Output.
     df_Output = pd.DataFrame(columns=['Pay Date', 'Account Number', 'Description', 'Debit Amount', 'Credit Amount', 'Location', 'Dept'])
@@ -100,7 +102,7 @@ def main():
                 rollupsums[lookupkey][1] = coa[i][hdc_index]
                 
             else:    
-                if counter == 127:
+                if i == 'PHA_Phone Allowance_Deduction':
                     values_list[counter] = abs(row[i].sum())
                 else:
                     values_list[counter] = row[i].sum()
