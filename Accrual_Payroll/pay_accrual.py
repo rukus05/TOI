@@ -32,14 +32,15 @@ def main():
         business_days = np.busday_count(start_accrual, end_accrual)
     else:
         business_days = np.busday_count(start_accrual, end_accrual) + 1
-
+    # Print the number of Business days.
+    print('The number of business days for this accrual is: ', business_days)
     accrual_hours = business_days * 8
     # Select input (Raw data) file.
     f = FilePrompt()
     df_toi = pd.read_excel(f)
     df_toi = df_toi.reset_index()
 
-    df_toi['Accrued Payroll'] = df_toi['Rate'].mul(accrual_hours)
+    df_toi['Accrued Payroll'] = df_toi['Hourly Rate'].mul(accrual_hours)
     df_toi['Accrued Payroll Tax'] = df_toi['Accrued Payroll'].mul(0.0765)
 
     df_groupby = df_toi.groupby(['Company', 'Location', 'Department'])
