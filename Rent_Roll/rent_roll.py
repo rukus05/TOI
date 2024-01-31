@@ -13,7 +13,7 @@ def main():
     df_toi = pd.read_excel(f)
     df_toi = df_toi.reset_index()
 
-    gl_code = {'Rent' : 14010, 'Rent Sales Tax' : 14020, 'CAM' : 14020, 'CAM Sales Tax' : 14020}
+    gl_code = {'Rent' : 14010, 'Rent Sales Tax' : 14020, 'CAM' : 14020, 'CAM Sales Tax' : 14020, 'CPI' : 14010}
 
     header_list = ['Rent', 'Rent Sales Tax', 'CAM', 'CAM Sales Tax']
     # Create new Dataframe for the Output.

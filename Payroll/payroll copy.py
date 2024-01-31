@@ -11,6 +11,7 @@ from definitions import remove_acct_list as remove_accts
 from definitions import credit_acct_list as cr_accts
 from definitions import credit_rollup_accts as credit_rollups
 from definitions import locations_dict as ld
+# from COA_Dict import excel_dict as cdict
 #from definitions import baseline_accounts as baseline
 
 
@@ -25,7 +26,7 @@ def main():
     df_toi = df_toi.reset_index()
     # Fill all blank cells with zeros.  
     # It's critiacal that any columns you do calculations do not have blanks.
-    df_toi.fillna(0, inplace=True)
+    # df_toi.fillna(0, inplace=True)
     # Put column headers into a List
     all_col_headers = list(df_toi.columns)   
 
@@ -46,7 +47,6 @@ def main():
 
     # Create a new list that starts with the "Regular Earnings Total" header.
     money_headers = col_headers[index_ret:]
-    # Discount for the last column, which is "Batch Number"
     last_header = 'Batch Number'
     
     
@@ -55,6 +55,9 @@ def main():
         money_headers.pop()
         lh = money_headers[-1]
         last_header = lh
+    
+    print(last_header)
+    # Save the number of money headers.
     size_of_money_headers = len(money_headers)
     #print(size_of_money_headers)
 
@@ -76,14 +79,17 @@ def main():
     values_list = [0 for _ in range(size_of_money_headers)]
     #print(values_list)
     #print(size_of_money_headers)
-    print(len(hdcl))
+    
     # Create new Dataframe for the Output.
     df_Output = pd.DataFrame(columns=['Pay Date', 'Account Number', 'Description', 'Debit Amount', 'Credit Amount', 'Location', 'Dept'])
     
     for groupings, row in df_groupby:
         # Find out what Home Department Code this row is, and get the index from the Home Department Code List
         if groupings[1] in hdcl:
-            hdc_index = hdcl.index(groupings[1])
+            #hdc_index = hdcl.index(groupings[1])
+            hdc_index = groupings[1]
+        if groupings[1] not in hdcl:
+            print('This Home Department Code is not defined: ', groupings[1])
         # Use the Home Department Code Index to get the right GL's from the Chart of Accounts
 
         # Dictionary Defining the Roll up Accounts, and initialize sum amd G/L for each to 0.  
@@ -101,15 +107,12 @@ def main():
                     found = True
                     lookupkey = key
                     break
-            # If this payroll item was found above, and the COA is not empty for it, then execute.  
-
-    
-            if found and (i in coa and coa[i]):
-                print (i, lookupkey,hdc_index)
-                #print(coa[i][hdc_index])                               
+            # If this payroll item was found above, and the COA is not empty for it, then execute.      
+            
+            # if found and (i in coa and coa[i]):
+            if found and (i in coa and coa[i][hdc_index] != 0):
                 rollupsums[lookupkey][0] += row[i].sum()
                 rollupsums[lookupkey][1] = coa[i][hdc_index]
-                #print (rollupsums[lookupkey][0], rollupsums[lookupkey][1])
                 
             else:    
                 if i == 'PHA_Phone Allowance_Deduction':
@@ -117,7 +120,7 @@ def main():
                 else:
                     values_list[counter] = row[i].sum()
                 if values_list[counter] != 0:
-                    if coa[i]:
+                    if coa[i][hdc_index]:
                        
                         # Convert data type to datetime64[ns]
                         ped = groupings[3]
