@@ -76,7 +76,7 @@ def main():
     values_list = [0 for _ in range(size_of_money_headers)]
     #print(values_list)
     #print(size_of_money_headers)
-    print(len(hdcl))
+    #print(len(hdcl))
     # Create new Dataframe for the Output.
     df_Output = pd.DataFrame(columns=['Pay Date', 'Account Number', 'Description', 'Debit Amount', 'Credit Amount', 'Location', 'Dept'])
     
@@ -105,14 +105,14 @@ def main():
 
     
             if found and (i in coa and coa[i]):
-                print (i, lookupkey,hdc_index)
+                #print (i, lookupkey,hdc_index)
                 #print(coa[i][hdc_index])                               
                 rollupsums[lookupkey][0] += row[i].sum()
                 rollupsums[lookupkey][1] = coa[i][hdc_index]
                 #print (rollupsums[lookupkey][0], rollupsums[lookupkey][1])
                 
             else:    
-                if i == 'PHA_Phone Allowance_Deduction':
+                if i == 'PHA_Phone Allowance_Deduction' or i == 'Net Pay' or i == 'S_MISCELLANEOUS_Deduction':
                     values_list[counter] = abs(row[i].sum())
                 else:
                     values_list[counter] = row[i].sum()

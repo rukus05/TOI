@@ -1,18 +1,13 @@
 import pandas as pd
 import time
+import math
 import numpy as np
 import json
 from pprint import pprint
 import re
 import tkinter as tk
 from tkinter import filedialog as fd
-from definitions import coa_dict as coa
-from definitions import hdc_list as hdcl
-from definitions import roll_up_accts as rollup
-from definitions import remove_acct_list as remove_accts
-from definitions import credit_acct_list as cr_accts
-from definitions import credit_rollup_accts as credit_rollups
-from definitions import locations_dict as ld
+
 #from definitions import baseline_accounts as baseline
 
 
@@ -32,16 +27,14 @@ def main():
     
 
     # Convert the DataFrame to a dictionary where keys are from the first column, and values are lists of row values
-    ed = df.set_index(df.columns[1], inplace = True)
-    excel_dict = df.to_dict(orient='index')
-    for k1, v1 in excel_dict.items():
-        for k2, v2 in v1.items():
-            print(v2)
-            if isinstance(v2, (float, int)):
-                print(v2)
-                v2 = int(v2)
-                print(v2)
-
+    ed = df.set_index("Home Department Code").to_dict("index")
+    #excel_dict = df.to_dict(orient='index')
+    for k1, v1 in ed.items(): 
+        ed[k1] = {k: int(v) for k, v in v1.items()}
+        #for k2, v2 in v1.items():
+        #    v1[k2] = {k: int(v) for k, v in v2.items()}
+    
+    print (ed)
     #updated_dict = {}
     #for k, v in excel_dict.items():
     #    updated_dict[k] = v[1:]
@@ -89,9 +82,9 @@ def main():
 
     # Write the dictionary to the text file
     with open(output_file_path, 'w') as file:
-        file.write(f"excel_dict = {repr(excel_dict)}\n")
+        file.write(str(ed))
         #pprint(excel_dict, stream=file)
-    
+    file.close
     print("The execution time is:", runningtime)
 
 

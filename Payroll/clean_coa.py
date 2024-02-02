@@ -1,15 +1,10 @@
 import time
+import math
 from pprint import pprint
 import tkinter as tk
-from COA_Dict import ed
+from COA_Dict import excel_dict as ed
 from tkinter import filedialog as fd
-from definitions import coa_dict as coa
-from definitions import hdc_list as hdcl
-from definitions import roll_up_accts as rollup
-from definitions import remove_acct_list as remove_accts
-from definitions import credit_acct_list as cr_accts
-from definitions import credit_rollup_accts as credit_rollups
-from definitions import locations_dict as ld
+
 #from definitions import baseline_accounts as baseline
 
 
@@ -21,10 +16,10 @@ def main():
 
     for k1, v1 in ed.items(): 
         for k2, v2 in v1.items():
-            if isinstance(v2, (float, int)):
-                v2 = int(v2)
+            v2 = math.trunc(v2)
+            print (v2)
     
-    print(ed)
+    #print(ed)
     
     runningtime = time.time() - start
 
