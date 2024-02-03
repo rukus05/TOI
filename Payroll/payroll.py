@@ -112,7 +112,7 @@ def main():
                 #print (rollupsums[lookupkey][0], rollupsums[lookupkey][1])
                 
             else:    
-                if i == 'PHA_Phone Allowance_Deduction' or i == 'Net Pay' or i == 'S_MISCELLANEOUS_Deduction':
+                if i == 'PHA_Phone Allowance_Deduction' or i == 'Net Pay' or i == 'S_MISCELLANEOUS_Deduction' or 'TEP - Education Progr':
                     values_list[counter] = abs(row[i].sum())
                 else:
                     values_list[counter] = row[i].sum()
