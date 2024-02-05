@@ -17,8 +17,10 @@ def main():
     # Prompt for current accrual date info
     current_year = int(input("Please enter the 4 digit year for this accrual: "))
     current_month = int(input("Please enter the 2-digit month for this accrual: "))
+    last_day = int(input("Please enter the 2-digit day for the last pay period in the month: "))
+    accrue_from = last_day + 1
     # Set the start for the accrual
-    start_accrual = datetime.date(current_year, current_month, 26)
+    start_accrual = datetime.date(current_year, current_month, accrue_from)
     # Determine the last day of the accrual month
     end_accrual = datetime.date(current_year, current_month, calendar.monthrange(current_year, current_month)[1])
 

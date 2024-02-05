@@ -214,5 +214,8 @@ locations_dict = {
     'TOI R1-Victorville RadOnc' : 1805, \
     'TOI R-1 Hemet RadOnc' : 1806, \
     'TOI Palm Desert' : 1057, \
+    'TOI Hialeah' : 20103, \
+    'TOI PH1-Westminster' : 4001, \
+    'TOI Temecula 2' : 1058
 
 }
