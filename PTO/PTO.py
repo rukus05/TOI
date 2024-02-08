@@ -1,11 +1,19 @@
+
 import tkinter as tk
 import pandas as pd
+import os
+import sys
 import time
 from fns import FilePrompt
 from fns import save_dataframe
 from definitions import pto_gl_dict as gldict
 from definitions import locations_dict as ld
 
+# Trying to import from root directory
+#root_dir = os.path.abspath('..')
+##print (root_dir)
+#sys.path.append(root_dir)
+#import locations as ld
 
 def main():
 

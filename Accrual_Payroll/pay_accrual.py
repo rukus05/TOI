@@ -12,7 +12,7 @@ from definitions import locations_dict as ld
 
 def main():
 
-    start = time.time()
+    
 
     # Prompt for current accrual date info
     current_year = int(input("Please enter the 4 digit year for this accrual: "))
@@ -23,7 +23,9 @@ def main():
     start_accrual = datetime.date(current_year, current_month, accrue_from)
     # Determine the last day of the accrual month
     end_accrual = datetime.date(current_year, current_month, calendar.monthrange(current_year, current_month)[1])
-
+    
+    # Begin calculation of runtime
+    start = time.time()
     # Determine the day of the week the last day lands on
     dow = end_accrual.strftime("%A")
     #print(dow)
@@ -67,7 +69,7 @@ def main():
     status_label.pack()
     save_button = tk.Button(app, text="Save as", command=save_dataframe(df_Output, status_label))
     save_button.pack(padx=20, pady=10)
-   
+    # End calculation of Runtime
     runningtime = time.time() - start
     print("The execution time is:", runningtime)
 
