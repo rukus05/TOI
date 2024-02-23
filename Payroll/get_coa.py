@@ -28,7 +28,7 @@ def main():
 
     # Convert the DataFrame to a dictionary where keys are from the first column, and values are lists of row values
     ed = df.set_index("Home Department Code").to_dict("index")
-    #excel_dict = df.to_dict(orient='index')
+    # Use list comprehension to remove decimal points from the dictionary
     for k1, v1 in ed.items(): 
         ed[k1] = {k: int(v) for k, v in v1.items()}
         #for k2, v2 in v1.items():
