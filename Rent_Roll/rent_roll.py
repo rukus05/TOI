@@ -15,7 +15,7 @@ def main():
 
     gl_code = {'Rent' : 14010, 'Rent Sales Tax' : 14020, 'CAM' : 14020, 'CAM Sales Tax' : 14020, 'CPI' : 14010}
 
-    header_list = ['Rent', 'Rent Sales Tax', 'CAM', 'CAM Sales Tax']
+    header_list = ['Rent', 'Rent Sales Tax', 'CAM', 'CAM Sales Tax', 'CPI']
     # Create new Dataframe for the Output.
     df_Output = pd.DataFrame(columns=['Vendor ID', 'Description', 'DR', 'CTT#', 'Location', 'Line'])
 

@@ -434,7 +434,7 @@ locations_dict = {
     'TOI Marana CLOSED' : 1039, \
     'TOI Chino/Chino Hills' : 1055, \
     'TOI Hollywood' : 2014, \
-    'TOI R1-Downey RadOnce' : 1802, \
+    'TOI R1-Downey RadOnc' : 1802, \
     'TOI R-1 Pomona RadOnc' : 1803, \
     'TOI R1-Covina RadOnc' : 1804, \
     'TOI R1-Victorville RadOnc' : 1805, \
