@@ -4,22 +4,34 @@ import numpy as np
 import re
 import tkinter as tk
 from tkinter import filedialog as fd
-from definitions import coa_dict as coa
+# from definitions import coa_dict as coa
 from definitions import hdc_list as hdcl
 from definitions import roll_up_accts as rollup
 from definitions import remove_acct_list as remove_accts
 from definitions import credit_acct_list as cr_accts
 from definitions import credit_rollup_accts as credit_rollups
 from definitions import locations_dict as ld
-# from COA_Dict import excel_dict as cdict
+from get_coa import getCOA
 #from definitions import baseline_accounts as baseline
 
 
 def main():
     
     start = time.time()
+
+    # Get the updated Chart of Accounts File
+    print('Select the latest Chart of Accounts file:')
+    z = FilePrompt()
+    df_COA_file = pd.read_excel(z)
+    df_COA_file = df_COA_file.reset_index()
+    df_COA_file.fillna(0, inplace=True)
+
+    df_COA = getCOA(df_COA_file)
+    print(df_COA)
+
     # If the raw data file has all the data in one file (002, 007, 008 sheets), you must save each entity in it's own file and run the program against each.
     # Read in Data from the "RawData.xlsx" file.
+    print('Select the raw data file to run Payroll for:')
     f = FilePrompt()
     df_toi = pd.read_excel(f)
 

@@ -11,8 +11,8 @@ from tkinter import filedialog as fd
 #from definitions import baseline_accounts as baseline
 
 
-def main():
-    
+def getCOA(df):
+    '''
     start = time.time()
     # If the raw data file has all the data in one file (002, 007, 008 sheets), you must save each entity in it's own file and run the program against each.
     # Read in Data from the "RawData.xlsx" file.
@@ -23,7 +23,7 @@ def main():
     # Fill all blank cells with zeros.  
     # It's critiacal that any columns you do calculations do not have blanks.
     df.fillna(0, inplace=True)
-
+    '''
     
 
     # Convert the DataFrame to a dictionary where keys are from the first column, and values are lists of row values
@@ -34,7 +34,7 @@ def main():
         #for k2, v2 in v1.items():
         #    v1[k2] = {k: int(v) for k, v in v2.items()}
     
-    print (ed)
+    return ed
     #updated_dict = {}
     #for k, v in excel_dict.items():
     #    updated_dict[k] = v[1:]
