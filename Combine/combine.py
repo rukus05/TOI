@@ -7,6 +7,8 @@ from fns import FilePrompt
 from fns import save_dataframe
 
 
+##  This program will combine 2 PTO liability files.  It will also ask for an employee data file where additional info is extracted
+##  This version has 'Hourly Rate' info in the employee file.
 
 def main():
     
@@ -44,7 +46,7 @@ def main():
     df_first = df_first.dropna(axis = 1, how ='all')
     df_second = df_second.dropna(axis = 1, how = 'all')
     pids = pd.concat([df_first['Position ID'], df_second['Position ID']], ignore_index=True)
-    print(type(pids))
+    #print(type(pids))
 
     # Add the unique IDs to a dictionary
     pids_dict = {value: {'First Month' : 0, 'Second Month' : 0, 'Company' : None, 'Department' : None, \
@@ -53,7 +55,7 @@ def main():
     #print(pids_dict)
 
     # Create new Dataframe for the Output.
-    df_Output = pd.DataFrame(columns=['Company', 'Position ID', 'Department', 'Location', 'Location Code', 'Hourly Rate', \
+    df_Output = pd.DataFrame(columns=['Company', 'Position ID', 'Department Name', 'Location', 'Department Code', 'Hourly Rate', \
                                       'First Month Liability', 'Second Month Liablity', 'Second Month Expense'])
 
     for index, row in df_first.iterrows():

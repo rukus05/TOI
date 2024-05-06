@@ -7,7 +7,8 @@ from fns import FilePrompt
 from fns import save_dataframe
 
 
-
+##  This program will combine 2 PTO liability files.  It will also ask for an employee data file where additional info is extracted
+##  This version has no 'Hourly Rate' info in the employee file.
 def main():
     
     start = time.time()
