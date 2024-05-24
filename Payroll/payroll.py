@@ -19,6 +19,7 @@ def main():
     start = time.time()
     # If the raw data file has all the data in one file (002, 007, 008 sheets), you must save each entity in it's own file and run the program against each.
     # Read in Data from the "RawData.xlsx" file.
+    print("Select the input file for this Payroll:")
     f = FilePrompt()
     df_toi = pd.read_excel(f)
 
@@ -165,6 +166,7 @@ def main():
             
  
     runningtime = time.time() - start
+    print("Save the Output:")
 
     # Start the "Save As" dialog box.
     app = tk.Tk()
