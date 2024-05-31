@@ -1,8 +1,0 @@
-setup.py
-toi_module/__init__.py
-toi_module/definitions.py
-toi_module/mappings.py
-zpack.egg-info/PKG-INFO
-zpack.egg-info/SOURCES.txt
-zpack.egg-info/dependency_links.txt
-zpack.egg-info/top_level.txt
