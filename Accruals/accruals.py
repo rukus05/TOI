@@ -2,10 +2,10 @@ import tkinter as tk
 import pandas as pd
 import time
 import numpy as np
-from fns import FilePrompt
-from fns import save_dataframe
-from definitions import locations_dict as ld
-from definitions import coa_dict as cd
+from zpack.fns import FilePrompt
+from zpack.fns import save_dataframe
+from toi_module.definitions import locations_dict as ld
+from toi_module.definitions import coa_accrual_dict as cd
 
 # Input file format changed on 11/9/23 by Rosel.  (See Accruals.py file in archive for old format program)#
 

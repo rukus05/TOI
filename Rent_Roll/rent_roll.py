@@ -1,5 +1,5 @@
-from fns import FilePrompt
-from fns import save_dataframe
+from zpack.fns import FilePrompt
+from zpack.fns import save_dataframe
 import tkinter as tk
 import pandas as pd
 import time
@@ -41,9 +41,6 @@ def main():
    
     runningtime = time.time() - start
     print("The execution time is:", runningtime)
-
-
-
 
 
 

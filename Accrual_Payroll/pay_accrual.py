@@ -4,10 +4,10 @@ import time
 import calendar
 import datetime
 import numpy as np
-from fns import FilePrompt
-from fns import save_dataframe
-from definitions import pay_mappings as pa_dict
-from definitions import locations_dict as ld
+from zpack.fns import FilePrompt
+from zpack.fns import save_dataframe
+from zpack.mappings import pay_mappings as pa_dict
+from zpack.definitions import locations_dict as ld
 
 
 def main():

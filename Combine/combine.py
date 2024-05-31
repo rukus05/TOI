@@ -3,8 +3,8 @@ import time
 import tkinter as tk
 import numpy as np
 import re
-from fns import FilePrompt
-from fns import save_dataframe
+from zpack.fns import FilePrompt
+from zpack.fns import save_dataframe
 
 
 ##  This program will combine 2 PTO liability files.  It will also ask for an employee data file where additional info is extracted
