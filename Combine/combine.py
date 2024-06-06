@@ -52,7 +52,7 @@ def main():
     pids_dict = {value: {'First Month' : 0, 'Second Month' : 0, 'Company' : None, 'Department' : None, \
                          'Location' : None, 'Location Code' : None, 'Hourly Rate' : None} for value in pids}
 
-    #print(pids_dict)
+    print(pids_dict)
 
     # Create new Dataframe for the Output.
     df_Output = pd.DataFrame(columns=['Company', 'Position ID', 'Department Name', 'Location', 'Department Code', 'Hourly Rate', \
@@ -89,8 +89,8 @@ def main():
                                                pids_dict[key]['Hourly Rate'], pids_dict[key]['First Month'], \
                                                pids_dict[key]['Second Month'], \
                                                pids_dict[key]['Second Month'] - pids_dict[key]['First Month']]
-    
-
+    runningtime = time.time() - start
+    print("Save the output file:")
     app = tk.Tk()
     app.title("Save File As")
     status_label = tk.Label(app, text="", fg="green")
@@ -98,7 +98,7 @@ def main():
     save_button = tk.Button(app, text="Save as", command=save_dataframe(df_Output, status_label))
     save_button.pack(padx=20, pady=10)
     # End calculation of Runtime
-    runningtime = time.time() - start
+    
     print("The execution time is:", runningtime)
 
 

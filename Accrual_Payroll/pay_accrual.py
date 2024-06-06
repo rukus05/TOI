@@ -6,8 +6,8 @@ import datetime
 import numpy as np
 from zpack.fns import FilePrompt
 from zpack.fns import save_dataframe
-from zpack.mappings import pay_mappings as pa_dict
-from zpack.definitions import locations_dict as ld
+from toi_module.mappings import pay_mappings as pa_dict
+from toi_module.definitions import locations_dict as ld
 
 
 def main():

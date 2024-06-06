@@ -1,4 +1,6 @@
-# This file holds definitions for the Payroll Journal Entry Automations Python Program.
+## TOI DEFINITIONS FILE##
+
+# This file holds definitions for the TOI Payroll Journal Entry Automations Python Program.
 
 # Create a Dictionary Class that ignores trailing and leading spaces.
 class RemoveSpacesDict(dict):
