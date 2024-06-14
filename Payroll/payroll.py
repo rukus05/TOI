@@ -11,6 +11,7 @@ from toi_module.definitions import remove_acct_list as remove_accts
 from toi_module.definitions import credit_acct_list as cr_accts
 from toi_module.definitions import credit_rollup_accts as credit_rollups
 from toi_module.definitions import locations_dict as ld
+from toi_module.definitions import duplicate_debits_dict as duplicate_debits
 from zpack.fns import FilePrompt
 from zpack.fns import save_dataframe
 #from definitions import baseline_accounts as baseline
@@ -89,7 +90,7 @@ def main():
             hdc_index = hdcl.index(groupings[1])
         # Use the Home Department Code Index to get the right GL's from the Chart of Accounts
 
-        # Dictionary Defining the Roll up Accounts, and initialize sum amd G/L for each to 0.  
+        # Dictionary Defining the Roll up Accounts, and initialize sum amd G/L for each to 0.  The keys must match roll_up_accts dict.
         rollupsums = {
             "Wages" : [0, 0], "401K Payable" : [0, 0], "Bonus-B_Bonus" : [0, 0], "FICA" : [0, 0], "Garnishments" : [0, 0], "HSA_Deduction" : [0, 0], "Medical Ins Ded" : [0, 0], \
             "Net Pay" : [0, 0], "Other Payroll Taxes" : [0, 0], "Overtime" : [0, 0], "Physician Bonus" : [0, 0], "Severance Expense" : [0, 0], "Tax Deduction" : [0, 0]
@@ -139,10 +140,16 @@ def main():
                                                 
                         # If matches for credit accounts, else it's a debit account.  Values are printed in appropriate column. 
                         # To address leading or trailing spaces in Location Descriptions, strip() method had to be employed whereever groupings[2] of the groupby object was referenced.
+
+                        
                         if i in cr_accts:
-                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + ' ' + str([i]), "", values_list[counter], ld[groupings[2].strip()], hdcl[hdc_index]]
+                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + str([i]), "", values_list[counter], ld[groupings[2].strip()], hdcl[hdc_index]]
                         else:
-                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + ' ' + str([i]), values_list[counter], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+                            if i in duplicate_debits:
+                                df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + str([i]), values_list[counter], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+                                df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + str([i]), "", values_list[counter], ld[groupings[2].strip()], hdcl[hdc_index]]
+                            else: 
+                                df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + str([i]), values_list[counter], "", ld[groupings[2].strip()], hdcl[hdc_index]]
             counter += 1
         
         for acct, z in rollupsums.items():
@@ -164,7 +171,12 @@ def main():
                 if acct in credit_rollups:
                     df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
                 else:
-                    df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+                    if acct in duplicate_debits:
+                        df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+                        df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
+                    else:
+                        df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
+                        
             
  
     runningtime = time.time() - start

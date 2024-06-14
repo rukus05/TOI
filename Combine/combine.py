@@ -52,7 +52,7 @@ def main():
     pids_dict = {value: {'First Month' : 0, 'Second Month' : 0, 'Company' : None, 'Department' : None, \
                          'Location' : None, 'Location Code' : None, 'Hourly Rate' : None} for value in pids}
 
-    print(pids_dict)
+    #print(pids_dict)
 
     # Create new Dataframe for the Output.
     df_Output = pd.DataFrame(columns=['Company', 'Position ID', 'Department Name', 'Location', 'Department Code', 'Hourly Rate', \
