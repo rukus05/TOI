@@ -88,6 +88,8 @@ def main():
         # Find out what Home Department Code this row is, and get the index from the Home Department Code List
         if groupings[1] in hdcl:
             hdc_index = hdcl.index(groupings[1])
+        else:
+            print(f"This is not in the Home Dept Codes {groupings[1]}")
         # Use the Home Department Code Index to get the right GL's from the Chart of Accounts
 
         # Dictionary Defining the Roll up Accounts, and initialize sum amd G/L for each to 0.  The keys must match roll_up_accts dict.
@@ -147,7 +149,7 @@ def main():
                         else:
                             if i in duplicate_debits:
                                 df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + str([i]), values_list[counter], "", ld[groupings[2].strip()], hdcl[hdc_index]]
-                                df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + str([i]), "", values_list[counter], ld[groupings[2].strip()], hdcl[hdc_index]]
+                                df_Output.loc[len(df_Output.index)] = [ped, '14900', str(groupings[0]) + ' ' + str([i]), "", values_list[counter], ld[groupings[2].strip()], hdcl[hdc_index]]
                             else: 
                                 df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + str([i]), values_list[counter], "", ld[groupings[2].strip()], hdcl[hdc_index]]
             counter += 1
@@ -173,9 +175,9 @@ def main():
                 else:
                     if acct in duplicate_debits:
                         df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
-                        df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
+                        df_Output.loc[len(df_Output.index)] = [ped, '14900', str(groupings[0]) + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
                     else:
-                        df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
+                        df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
                         
             
  
