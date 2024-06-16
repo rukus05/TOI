@@ -18,7 +18,7 @@ def getCOA(df):
     # and the values are dictionaries containing the column names and corresponding values for each row.
     ed = df.set_index("Home Department Code").to_dict("index")
     # iterate over each item (key-value pair) in the dictionary 
-    
+    #print(df.head)
     for k1, v1 in ed.items(): 
         # Use list comprehension to remove decimal points from the dictionary
         # Change k1 : v1 key value pair to k : v (where v is v1 converted to an integet)

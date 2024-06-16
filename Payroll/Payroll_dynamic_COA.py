@@ -5,7 +5,7 @@ import re
 import tkinter as tk
 from tkinter import filedialog as fd
 # from definitions import coa_dict as coa
-from toi_module.definitions import coa_dict as coa
+# from toi_module.definitions import coa_dict as coa
 from toi_module.definitions import hdc_list as hdcl
 from toi_module.definitions import roll_up_accts as rollup
 from toi_module.definitions import remove_acct_list as remove_accts
@@ -31,7 +31,8 @@ def main():
     df_COA_file.fillna(0, inplace=True)
 
     df_COA = getCOA(df_COA_file)
-    print(df_COA)
+    #print(df_COA)
+    #  To see how dictionary looks, see the COA_Dict.py file in the archive
 
     # If the raw data file has all the data in one file (002, 007, 008 sheets), you must save each entity in it's own file and run the program against each.
     # Read in Data from the "RawData.xlsx" file.
@@ -72,16 +73,18 @@ def main():
         lh = money_headers[-1]
         last_header = lh
     
-    print(last_header)
+    #print(last_header)
     # Save the number of money headers.
     size_of_money_headers = len(money_headers)
     #print(size_of_money_headers)
-
+    '''
+    # Not used anymore#
     if size_of_money_headers != 199:
         print('Columns in Raw Data File have changed!!!!')
     else:
         print('Columns in Raw Data File appear to be unchanged')
-        
+    '''
+
     # Convert the Pay Date column to a datetime data type
     df_toi['Pay Date'] = pd.to_datetime(df_toi['Pay Date'])
     # Remove the hours, minutes, and seconds
@@ -103,9 +106,9 @@ def main():
         # Find out what Home Department Code this row is, and get the index from the Home Department Code List
         if groupings[1] in hdcl:
             #hdc_index = hdcl.index(groupings[1])
-            hdc_index = groupings[1]
-        if groupings[1] not in hdcl:
-            print('This Home Department Code is not defined: ', groupings[1])
+            homedeptcode = groupings[1]
+        else:
+           print(f"{groupings[1]} is not in the Home Dept Codes!")
         # Use the Home Department Code Index to get the right GL's from the Chart of Accounts
 
         # Dictionary Defining the Roll up Accounts, and initialize sum amd G/L for each to 0.  
@@ -126,17 +129,17 @@ def main():
             # If this payroll item was found above, and the COA is not empty for it, then execute.      
             
             # if found and (i in coa and coa[i]):
-            if found and (i in coa and coa[i][hdc_index] != 0):
+            if found and (i in df_COA and df_COA[i]):
                 rollupsums[lookupkey][0] += row[i].sum()
-                rollupsums[lookupkey][1] = coa[i][hdc_index]
+                rollupsums[lookupkey][1] = df_COA[i][homedeptcode]
                 
             else:    
-                if i == 'PHA_Phone Allowance_Deduction':
+                if i == 'PHA_Phone Allowance_Deduction' or i == 'Net Pay' or i == 'S_MISCELLANEOUS_Deduction' or 'TEP - Education Progr':
                     values_list[counter] = abs(row[i].sum())
                 else:
                     values_list[counter] = row[i].sum()
                 if values_list[counter] != 0:
-                    if coa[i][hdc_index]:
+                    if df_COA[i][homedeptcode]:
                        
                         # Convert data type to datetime64[ns]
                         ped = groupings[3]
@@ -156,9 +159,13 @@ def main():
                         # If matches for credit accounts, else it's a debit account.  Values are printed in appropriate column. 
                         # To address leading or trailing spaces in Location Descriptions, strip() method had to be employed whereever groupings[2] of the groupby object was referenced.
                         if i in cr_accts:
-                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + ' ' + str([i]), "", values_list[counter], ld[groupings[2].strip()], hdcl[hdc_index]]
+                            df_Output.loc[len(df_Output.index)] = [ped, df_COA[i][homedeptcode], str(groupings[0]) + ' ' + ' ' + str([i]), "", values_list[counter], ld[groupings[2].strip()], homedeptcode]
                         else:
-                            df_Output.loc[len(df_Output.index)] = [ped, coa[i][hdc_index], str(groupings[0]) + ' ' + ' ' + str([i]), values_list[counter], "", ld[groupings[2].strip()], hdcl[hdc_index]]
+                            if i in duplicate_debits:
+                                df_Output.loc[len(df_Output.index)] = [ped, df_COA[i][homedeptcode], str(groupings[0]) + ' ' + str([i]), values_list[counter], "", ld[groupings[2].strip()], homedeptcode]
+                                df_Output.loc[len(df_Output.index)] = [ped, '14900', str(groupings[0]) + ' ' + str([i]), "", values_list[counter], ld[groupings[2].strip()], homedeptcode]
+                            else: 
+                                df_Output.loc[len(df_Output.index)] = [ped, df_COA[i][homedeptcode], str(groupings[0]) + ' ' + str([i]), values_list[counter], "", ld[groupings[2].strip()], homedeptcode]
             counter += 1
         
         for acct, z in rollupsums.items():
@@ -178,11 +185,14 @@ def main():
 
                 # If matches for credit accounts, else it's a debit account
                 if acct in credit_rollups:
-                    df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, "", z[0], ld[groupings[2].strip()], hdcl[hdc_index]]
+                    df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, "", z[0], ld[groupings[2].strip()], homedeptcode]
                 else:
-                    df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + ' ' + acct, z[0], "", ld[groupings[2].strip()], hdcl[hdc_index]]
-            
- 
+                    if acct in duplicate_debits:
+                        df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, z[0], "", ld[groupings[2].strip()], homedeptcode]
+                        df_Output.loc[len(df_Output.index)] = [ped, '14900', str(groupings[0]) + ' ' + acct, "", z[0], ld[groupings[2].strip()], homedeptcode]
+                    else:
+                        df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, z[0], "", ld[groupings[2].strip()], homedeptcode]
+                        
     runningtime = time.time() - start
 
     # Start the "Save As" dialog box.

@@ -89,7 +89,7 @@ def main():
         if groupings[1] in hdcl:
             hdc_index = hdcl.index(groupings[1])
         else:
-            print(f"This is not in the Home Dept Codes {groupings[1]}")
+            print(f"{groupings[1]} is not in the Home Dept Codes!")
         # Use the Home Department Code Index to get the right GL's from the Chart of Accounts
 
         # Dictionary Defining the Roll up Accounts, and initialize sum amd G/L for each to 0.  The keys must match roll_up_accts dict.
