@@ -16,7 +16,9 @@ def getCOA(df):
     
     # converts the DataFrame into a dictionary where the keys are the index values  
     # and the values are dictionaries containing the column names and corresponding values for each row.
+    df = df.drop(columns=['Roll-Up', 'DR/CR'])
     ed = df.set_index("Home Department Code").to_dict("index")
+
     # iterate over each item (key-value pair) in the dictionary 
     #print(df.head)
     for k1, v1 in ed.items(): 

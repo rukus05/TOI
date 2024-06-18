@@ -129,12 +129,12 @@ def main():
             # If this payroll item was found above, and the COA is not empty for it, then execute.      
             
             # if found and (i in coa and coa[i]):
-            if found and (i in df_COA and df_COA[i]):
+            if found and (i in df_COA and df_COA[i][homedeptcode] != 0):
                 rollupsums[lookupkey][0] += row[i].sum()
                 rollupsums[lookupkey][1] = df_COA[i][homedeptcode]
                 
             else:    
-                if i == 'PHA_Phone Allowance_Deduction' or i == 'Net Pay' or i == 'S_MISCELLANEOUS_Deduction' or 'TEP - Education Progr':
+                if i == 'PHA_Phone Allowance_Deduction':
                     values_list[counter] = abs(row[i].sum())
                 else:
                     values_list[counter] = row[i].sum()
@@ -167,7 +167,7 @@ def main():
                             else: 
                                 df_Output.loc[len(df_Output.index)] = [ped, df_COA[i][homedeptcode], str(groupings[0]) + ' ' + str([i]), values_list[counter], "", ld[groupings[2].strip()], homedeptcode]
             counter += 1
-        
+        #print(rollupsums)
         for acct, z in rollupsums.items():
             if z[0] != 0:
                 ped = groupings[3]
