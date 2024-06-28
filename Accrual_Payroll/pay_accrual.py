@@ -47,10 +47,10 @@ def main():
     df_toi['Accrued Payroll'] = df_toi['Hourly Rate'].mul(accrual_hours)
     df_toi['Accrued Payroll Tax'] = df_toi['Accrued Payroll'].mul(0.0765)
 
-    df_groupby = df_toi.groupby(['Company', 'Location', 'Department'])
+    df_groupby = df_toi.groupby(['Company Code', 'Location Description', 'Department'])
 
 
-    df_Output = pd.DataFrame(columns=['Company', 'Location', 'Department','Accrued Payroll', 'Description', 'GL Account'])
+    df_Output = pd.DataFrame(columns=['Company Code', 'Location Description', 'Department','Accrued Payroll', 'Description', 'GL Account'])
 
     for groupings, row in df_groupby:
         acc_pay = row['Accrued Payroll'].sum()

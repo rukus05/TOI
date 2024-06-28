@@ -194,7 +194,7 @@ def main():
                         df_Output.loc[len(df_Output.index)] = [ped, z[1], str(groupings[0]) + ' ' + acct, z[0], "", ld[groupings[2].strip()], homedeptcode]
                         
     runningtime = time.time() - start
-
+    print("Save the Output File...")
     # Start the "Save As" dialog box.
     app = tk.Tk()
     app.title("Save File As")
