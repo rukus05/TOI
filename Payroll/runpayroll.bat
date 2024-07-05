@@ -1,3 +1,3 @@
 @echo off
-python Payroll_dynamic_COA.py
+py Payroll_dynamic_COA.py
 pause
