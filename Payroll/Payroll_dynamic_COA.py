@@ -89,6 +89,7 @@ def main():
     df_toi['Pay Date'] = pd.to_datetime(df_toi['Pay Date'])
     # Remove the hours, minutes, and seconds
     df_toi['Pay Date'] = df_toi['Pay Date'].dt.date
+    print('This input file is for Company ' + df_toi['Company Code'].iloc[0])
 
     # Group the Data Frame by Company Code,  Home Department Code, and Location.
     df_groupby = df_toi.groupby(['Batch Number', 'Home Department Code', 'Location Description', 'Pay Date'])

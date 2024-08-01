@@ -107,7 +107,7 @@ locations_dict = {
     'Acquisition' : 200, \
     'MGMT' : 300, \
     'Cerritos Corporate' : 9001, \
-    'Florida Corporate' : 9002, \
+    'Florida Corporate - Not Active' : 9002, \
     'TOI' : 400, \
     'Clinical Research' : 410, \
     'TOI FL' : 500, \
