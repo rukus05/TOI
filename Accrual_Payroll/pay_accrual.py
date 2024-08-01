@@ -40,6 +40,7 @@ def main():
     print('The number of business days for this accrual is: ', business_days)
     accrual_hours = business_days * 8
     # Select input (Raw data) file.
+    print('Select the input file.')
     f = FilePrompt()
     df_toi = pd.read_excel(f)
     df_toi = df_toi.reset_index()
@@ -47,10 +48,10 @@ def main():
     df_toi['Accrued Payroll'] = df_toi['Hourly Rate'].mul(accrual_hours)
     df_toi['Accrued Payroll Tax'] = df_toi['Accrued Payroll'].mul(0.0765)
 
-    df_groupby = df_toi.groupby(['Company Code', 'Location Description', 'Department'])
+    df_groupby = df_toi.groupby(['Company Code', 'Location Description', 'Home Department Code'])
 
 
-    df_Output = pd.DataFrame(columns=['Company Code', 'Location Description', 'Department','Accrued Payroll', 'Description', 'GL Account'])
+    df_Output = pd.DataFrame(columns=['Company Code', 'Location Description', 'Home Department Code','Accrued Payroll', 'Description', 'GL Account'])
 
     for groupings, row in df_groupby:
         acc_pay = row['Accrued Payroll'].sum()
@@ -64,6 +65,7 @@ def main():
 
     # Start the "Save As" dialog box.
     app = tk.Tk()
+    print('Save the Output File.')
     app.title("Save File As")
     status_label = tk.Label(app, text="", fg="green")
     status_label.pack()
