@@ -39,6 +39,7 @@ def main():
     print('Select the raw data file to run Payroll for:')
     f = FilePrompt()
     df_toi = pd.read_excel(f)
+    #df_toi = pd.read_excel(f, dtype={'Home Department Code': str})
 
     df_toi = df_toi.reset_index()
     # Fill all blank cells with zeros.  
