@@ -9,6 +9,7 @@ def main():
 
     start = time.time()
     # Select input (Raw data) file.
+    print('Select the Rent Roll file (Input):')
     f = FilePrompt()
     df_toi = pd.read_excel(f)
     df_toi = df_toi.reset_index()
@@ -32,6 +33,7 @@ def main():
 
 
     # Start the "Save As" dialog box.
+    print('Save the Output:')
     app = tk.Tk()
     app.title("Save File As")
     status_label = tk.Label(app, text="", fg="green")
