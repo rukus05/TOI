@@ -226,7 +226,9 @@ locations_dict = {
     'TOI Palm Desert' : 1057, \
     'TOI Hialeah' : 2013, \
     'TOI PH1-Westminster' : 4001, \
-    'TOI Temecula 2' : 1058
+    'TOI Temecula 2' : 1058, \
+    'TOI OR Salem' : 5001, \
+    'TOI OR Portland' : 5002, \
 
 }
 
