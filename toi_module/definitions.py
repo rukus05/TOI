@@ -90,7 +90,8 @@ credit_acct_list = ['5_OREGON WBF TAX_Deduction', '69_TAXL$_Deduction', '70_Bank
                     'Z_1099 Employess_Deduction', 'Family Leave Insurance - Employee Tax', 'Federal Income - Employee Tax', 'Lived in Local - EE Tax', 'Lived in State- EE Tax', \
                     'Local 10 - Employee Tax', 'Local 4 - Employee Tax', 'Local 5 - Employee Tax', 'Local 9 - Employee Tax', 'Medical Leave Insurance - Employee Tax', \
                     'Medicare - Employee Tax', 'SDI - Employee Tax', 'Social Security - Employee Tax', 'SUI - Employee Tax', 'SUI/SDI Employee Tax', 'Transit - Employee Tax', \
-                    'Worked in Local - EE Tax', 'Worked in State- EE Tax', 'Medicare Surtax - Employee Tax', 'Net Pay', 'Medicare Surtax Adjust - Employee Tax']
+                    'Worked in Local - EE Tax', 'Worked in State- EE Tax', 'Medicare Surtax - Employee Tax', 'Net Pay', 'Medicare Surtax Adjust - Employee Tax', 'CK4 DirDep', \
+                    'CK5 DirDep', 'CK6 DirDep']
 
 # Defines the Rollup Accounts that are Credit Accounts
 credit_rollup_accts = ["Garnishments", "Net Pay",  "HSA_Deduction", "401K Payable", "Medical Ins Ded", "Tax Deduction"]
